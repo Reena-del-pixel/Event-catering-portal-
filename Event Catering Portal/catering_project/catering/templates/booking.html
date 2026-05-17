@@ -1,0 +1,211 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Booking Premium - Catering Portal</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(-45deg,#0f172a,#1e1b4b,#0b1220,#111827);
+    background-size:400% 400%;
+    animation:gradientMove 12s ease infinite;
+    color:#e2e8f0;
+}
+
+@keyframes gradientMove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+/* HEADER */
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 30px;
+    background:rgba(2,6,23,0.7);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.logo{
+    color:#fff;
+    font-size:22px;
+    font-weight:700;
+    text-decoration:none;
+}
+
+/* PROGRESS */
+.progress{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    margin:25px 0;
+}
+
+.step{
+    padding:8px 14px;
+    border-radius:20px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.1);
+    font-size:13px;
+}
+
+.step.active{
+    background:#7c3aed;
+    color:white;
+}
+
+/* CONTAINER */
+.container{
+    display:flex;
+    justify-content:center;
+    padding:20px;
+}
+
+.card{
+    width:100%;
+    max-width:900px;
+    display:flex;
+    border-radius:20px;
+    overflow:hidden;
+    background:rgba(15,23,42,0.85);
+    backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,0.08);
+    box-shadow:0 25px 80px rgba(0,0,0,0.7);
+    position:relative;
+}
+
+/* LEFT */
+.form-section{
+    flex:1;
+    padding:35px;
+}
+
+/* SERVICE CARD */
+.service-card{
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.08);
+    padding:15px;
+    border-radius:14px;
+    margin-bottom:20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+/* FORM */
+label{
+    font-size:13px;
+    color:#cbd5e1;
+    display:block;
+    margin-bottom:5px;
+}
+
+input,textarea{
+    width:100%;
+    padding:12px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,0.1);
+    background:rgba(255,255,255,0.05);
+    color:white;
+    margin-bottom:15px;
+    outline:none;
+}
+
+input:focus,textarea:focus{
+    border-color:#7c3aed;
+    box-shadow:0 0 0 3px rgba(124,58,237,0.2);
+}
+
+/* BUTTON */
+.btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:14px;
+    background:linear-gradient(135deg,#7c3aed,#2563eb);
+    color:white;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+/* IMAGE */
+.image{
+    flex:1;
+    background:url("{% static 'images/login.jpg' %}") center/cover;
+    filter:brightness(0.7);
+}
+
+@media(max-width:768px){
+    .image{display:none;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <a href="{% url 'home' %}" class="logo">🍽️ Catering Portal</a>
+</header>
+
+<!-- PROGRESS -->
+<div class="progress">
+    <div class="step active">1 Booking</div>
+    <div class="step">2 Payment</div>
+    <div class="step">3 Done</div>
+</div>
+
+<div class="container">
+<div class="card">
+
+<div class="form-section">
+
+<h2 style="margin-bottom:10px;">Complete Your Booking</h2>
+
+<!-- SERVICE -->
+<div class="service-card">
+    <span>🍽️ {{ service_name }}</span>
+    <span>₹{{ service_price }}</span>
+</div>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <label>Date</label>
+    <input type="date" name="date" required>
+
+    <!-- ✅ NEW FIELD ADDED -->
+    <label>Contact Number</label>
+    <input type="tel" name="contact" placeholder="Enter your mobile number" required>
+
+    <label>Guests</label>
+    <input type="number" name="guests" min="1" placeholder="e.g. 100" required>
+
+    <label>Address</label>
+    <textarea name="address" rows="3" placeholder="Enter full address"></textarea>
+
+    <button class="btn">Proceed to Payment →</button>
+</form>
+
+</div>
+
+<div class="image"></div>
+
+</div>
+</div>
+
+</body>
+</html>

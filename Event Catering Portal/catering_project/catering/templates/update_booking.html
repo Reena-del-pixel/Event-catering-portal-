@@ -1,0 +1,237 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catering Portal - Update Booking</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Segoe UI', system-ui, sans-serif;
+        }
+
+        body{
+            min-height:100vh;
+            background:linear-gradient(135deg,#0b1220,#111827,#1e1b4b);
+            color:#e2e8f0;
+        }
+
+        header{
+            background:rgba(2,6,23,0.75);
+            backdrop-filter:blur(14px);
+            padding:15px 30px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            border-bottom:1px solid rgba(255,255,255,0.08);
+            position:sticky;
+            top:0;
+            z-index:1000;
+        }
+
+        .logo{
+            font-size:24px;
+            font-weight:700;
+            text-decoration:none;
+            color:#fff;
+        }
+
+        nav ul{
+            display:flex;
+            list-style:none;
+            gap:18px;
+            align-items:center;
+        }
+
+        nav ul li a{
+            color:#cbd5e1;
+            text-decoration:none;
+            transition:0.3s;
+            font-size:14px;
+        }
+
+        nav ul li a:hover{
+            color:#a78bfa;
+        }
+
+        .logout-btn{
+            padding:6px 12px;
+            border-radius:8px;
+            border:1px solid rgba(255,255,255,0.2);
+        }
+
+        .logout-btn:hover{
+            background:#7c3aed;
+            border-color:#7c3aed;
+            color:#fff;
+        }
+
+        .main-content{
+            min-height:calc(100vh - 70px);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            padding:40px 20px;
+        }
+
+        .form-card{
+            width:100%;
+            max-width:460px;
+            background:rgba(15,23,42,0.85);
+            backdrop-filter:blur(18px);
+            border:1px solid rgba(255,255,255,0.08);
+            border-radius:20px;
+            padding:35px;
+            box-shadow:0 25px 70px rgba(0,0,0,0.6);
+            text-align:center;
+            animation:fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn{
+            from{opacity:0; transform:translateY(20px);}
+            to{opacity:1; transform:translateY(0);}
+        }
+
+        .icon-box{
+            width:65px;
+            height:65px;
+            margin:0 auto 15px;
+            border-radius:50%;
+            background:rgba(124,58,237,0.15);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:28px;
+            color:#a78bfa;
+            border:1px solid rgba(124,58,237,0.3);
+        }
+
+        h3{
+            font-size:22px;
+            margin-bottom:6px;
+            color:#fff;
+        }
+
+        .subtitle{
+            font-size:13px;
+            color:#94a3b8;
+            margin-bottom:25px;
+        }
+
+        .form-group{
+            text-align:left;
+            margin-bottom:18px;
+        }
+
+        label{
+            display:block;
+            font-size:13px;
+            margin-bottom:6px;
+            color:#cbd5e1;
+        }
+
+        input{
+            width:100%;
+            padding:12px 14px;
+            border-radius:12px;
+            border:1px solid rgba(255,255,255,0.1);
+            background:rgba(255,255,255,0.05);
+            color:#fff;
+            outline:none;
+            transition:0.3s;
+        }
+
+        input:focus{
+            border-color:#7c3aed;
+            box-shadow:0 0 0 3px rgba(124,58,237,0.25);
+            background:rgba(255,255,255,0.08);
+        }
+
+        .btn-submit{
+            width:100%;
+            padding:13px;
+            border:none;
+            border-radius:12px;
+            background:linear-gradient(135deg,#7c3aed,#2563eb);
+            color:#fff;
+            font-size:15px;
+            font-weight:600;
+            cursor:pointer;
+            margin-top:10px;
+            transition:0.3s;
+        }
+
+        .btn-submit:hover{
+            transform:translateY(-2px);
+            box-shadow:0 10px 25px rgba(124,58,237,0.4);
+        }
+
+        .btn-back{
+            display:inline-block;
+            margin-top:18px;
+            color:#94a3b8;
+            text-decoration:none;
+            font-size:13px;
+            transition:0.3s;
+        }
+
+        .btn-back:hover{
+            color:#a78bfa;
+            text-decoration:underline;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <a href="{% url 'home' %}" class="logo">🍽️ Catering Portal</a>
+    <nav>
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'my_bookings' %}">My Bookings</a></li>
+            <li><a href="{% url 'profile' %}">Profile</a></li>
+            <li><a href="{% url 'contact_us' %}">Contact</a></li>
+            <li><a href="{% url 'about_us' %}">About</a></li>
+            <li><a href="{% url 'logout' %}" class="logout-btn">Logout</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="main-content">
+
+    <div class="form-card">
+
+        <div class="icon-box">✍️</div>
+
+        <h3>Update Booking</h3>
+        <p class="subtitle">Booking ID #{{ booking.id }}</p>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Event Date</label>
+                <input type="date" name="date" value="{{ booking.date|date:'Y-m-d' }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Guests</label>
+                <input type="number" name="guests" value="{{ booking.guests }}" min="1" required>
+            </div>
+
+            <button type="submit" class="btn-submit">Save Changes</button>
+        </form>
+
+        <a href="{% url 'my_bookings' %}" class="btn-back">← Back to Bookings</a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

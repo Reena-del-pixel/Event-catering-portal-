@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Catering Portal</title>
+
+    {% load static %}
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Poppins', sans-serif;
+        }
+
+        body{
+            background:#f5f7fb;
+            color:#333;
+            min-height:100vh;
+            display:flex;
+            flex-direction:column;
+        }
+
+        /* HEADER */
+
+        header{
+            background:linear-gradient(135deg,#4a148c,#7b1fa2);
+            padding:15px 40px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            position:sticky;
+            top:0;
+            z-index:1000;
+            box-shadow:0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .logo{
+            text-decoration:none;
+            color:white;
+            font-size:28px;
+            font-weight:700;
+            letter-spacing:1px;
+        }
+
+        nav ul{
+            display:flex;
+            gap:22px;
+            list-style:none;
+            align-items:center;
+        }
+
+        nav ul li a{
+            color:white;
+            text-decoration:none;
+            font-size:15px;
+            font-weight:500;
+            transition:0.3s;
+        }
+
+        nav ul li a:hover{
+            color:#ffd54f;
+        }
+
+        .logout-btn{
+            border:1px solid white;
+            padding:8px 18px;
+            border-radius:30px;
+        }
+
+        .logout-btn:hover{
+            background:white;
+            color:#4a148c;
+        }
+
+        /* HERO SECTION */
+
+        .hero{
+            height:380px;
+            background:
+            linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),
+            url("{% static 'images/banner.jpg' %}");
+            background-size:cover;
+            background-position:center;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            text-align:center;
+            color:white;
+            padding:20px;
+        }
+
+        .hero-content h1{
+            font-size:48px;
+            margin-bottom:15px;
+        }
+
+        .hero-content p{
+            font-size:18px;
+            max-width:700px;
+            line-height:1.7;
+            margin:auto;
+        }
+
+        .hero-btn{
+            display:inline-block;
+            margin-top:25px;
+            padding:12px 28px;
+            background:#ff9800;
+            color:white;
+            text-decoration:none;
+            border-radius:30px;
+            font-weight:600;
+            transition:0.3s;
+        }
+
+        .hero-btn:hover{
+            background:#fb8c00;
+            transform:translateY(-2px);
+        }
+
+        /* CONTAINER */
+
+        .container{
+            width:100%;
+            max-width:1250px;
+            margin:50px auto;
+            padding:0 20px;
+        }
+
+        .section-title{
+            text-align:center;
+            font-size:36px;
+            color:#4a148c;
+            margin-bottom:10px;
+            font-weight:700;
+        }
+
+        .section-subtitle{
+            text-align:center;
+            color:#777;
+            margin-bottom:45px;
+            font-size:16px;
+        }
+
+        /* GRID */
+
+        .grid-container{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+            gap:28px;
+        }
+
+        /* CARD */
+
+        .card{
+            background:white;
+            border-radius:18px;
+            overflow:hidden;
+            box-shadow:0 8px 25px rgba(0,0,0,0.08);
+            transition:0.4s;
+            position:relative;
+        }
+
+        .card:hover{
+            transform:translateY(-10px);
+        }
+
+        .card-img{
+            width:100%;
+            height:220px;
+            object-fit:cover;
+        }
+
+        .card-content{
+            padding:22px;
+        }
+
+        .card-title{
+            font-size:22px;
+            color:#222;
+            margin-bottom:10px;
+            font-weight:700;
+        }
+
+        .card-desc{
+            color:#666;
+            line-height:1.6;
+            font-size:14px;
+            margin-bottom:18px;
+        }
+
+        .card-footer{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+
+        .card-price{
+            color:#4a148c;
+            font-size:22px;
+            font-weight:700;
+        }
+
+        .primary-btn{
+            text-decoration:none;
+            background:linear-gradient(135deg,#5e35b1,#3949ab);
+            color:white;
+            padding:10px 18px;
+            border-radius:30px;
+            font-size:14px;
+            font-weight:600;
+            transition:0.3s;
+        }
+
+        .primary-btn:hover{
+            transform:scale(1.05);
+        }
+
+        /* FEATURES */
+
+        .features{
+            margin-top:70px;
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+            gap:25px;
+        }
+
+        .feature-box{
+            background:white;
+            padding:30px 20px;
+            text-align:center;
+            border-radius:18px;
+            box-shadow:0 6px 20px rgba(0,0,0,0.06);
+        }
+
+        .feature-box h3{
+            margin:15px 0 10px;
+            color:#4a148c;
+        }
+
+        .feature-box p{
+            color:#666;
+            font-size:14px;
+            line-height:1.6;
+        }
+
+        /* FOOTER */
+
+        footer{
+            margin-top:auto;
+            background:#1f1f1f;
+            color:#bbb;
+            text-align:center;
+            padding:18px;
+            font-size:14px;
+        }
+
+        /* RESPONSIVE */
+
+        @media(max-width:768px){
+
+            header{
+                flex-direction:column;
+                gap:15px;
+                padding:20px;
+            }
+
+            nav ul{
+                flex-wrap:wrap;
+                justify-content:center;
+            }
+
+            .hero-content h1{
+                font-size:34px;
+            }
+
+            .hero-content p{
+                font-size:15px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+
+    <header>
+
+        <a href="{% url 'home' %}" class="logo">
+            🍽️ Catering Portal
+        </a>
+
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'my_bookings' %}">My Bookings</a></li>
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+                <li><a href="{% url 'contact_us' %}">Contact</a></li>
+                <li><a href="{% url 'about_us' %}">About</a></li>
+                <li>
+                    <a href="{% url 'logout' %}" class="logout-btn">
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+    </header>
+
+    <!-- HERO SECTION -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h1>Delicious Food For Every Occasion</h1>
+
+            <p>
+                Make your events unforgettable with our premium catering services,
+                elegant presentation, and mouth-watering cuisines.
+            </p>
+
+            <a href="#services" class="hero-btn">
+                Explore Services
+            </a>
+
+        </div>
+
+    </section>
+
+    <!-- SERVICES -->
+
+    <div class="container" id="services">
+
+        <h2 class="section-title">Our Catering Services</h2>
+
+        <p class="section-subtitle">
+            Premium Catering For Weddings, Parties & Corporate Events
+        </p>
+
+        <div class="grid-container">
+
+            <!-- Wedding -->
+
+            <div class="card">
+
+                <img src="{% static 'images/services.jpg' %}" class="card-img">
+
+                <div class="card-content">
+
+                    <h3 class="card-title">Wedding Buffet</h3>
+
+                    <p class="card-desc">
+                        Delicious multi-cuisine wedding buffet with elegant service.
+                    </p>
+
+                    <div class="card-footer">
+
+                        <div class="card-price">₹50,000</div>
+
+                        <a href="{% url 'booking' 'wedding' %}" class="primary-btn">
+                            Book Now
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Birthday -->
+
+            <div class="card">
+
+                <img src="{% static 'images/birthday.jpg' %}" class="card-img">
+
+                <div class="card-content">
+
+                    <h3 class="card-title">Birthday Party</h3>
+
+                    <p class="card-desc">
+                        Creative menus and decoration for memorable birthdays.
+                    </p>
+
+                    <div class="card-footer">
+
+                        <div class="card-price">₹20,000</div>
+
+                        <a href="{% url 'booking' 'birthday' %}" class="primary-btn">
+                            Book Now
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Corporate -->
+
+            <div class="card">
+
+                <img src="{% static 'images/corporate.jpg' %}" class="card-img">
+
+                <div class="card-content">
+
+                    <h3 class="card-title">Corporate Event</h3>
+
+                    <p class="card-desc">
+                        Professional catering solutions for corporate gatherings.
+                    </p>
+
+                    <div class="card-footer">
+
+                        <div class="card-price">₹35,000</div>
+
+                        <a href="{% url 'booking' 'corporate' %}" class="primary-btn">
+                            Book Now
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Cocktail -->
+
+            <div class="card">
+
+                <img src="{% static 'images/Cocktail.jpg' %}" class="card-img">
+
+                <div class="card-content">
+
+                    <h3 class="card-title">Cocktail Evening</h3>
+
+                    <p class="card-desc">
+                        Luxury cocktail evenings with stylish food presentation.
+                    </p>
+
+                    <div class="card-footer">
+
+                        <div class="card-price">₹50,000</div>
+
+                        <a href="{% url 'booking' 'Cocktail' %}" class="primary-btn">
+                            Book Now
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- New Year -->
+
+            <div class="card">
+
+                <img src="{% static 'images/New Year.jpg' %}" class="card-img">
+
+                <div class="card-content">
+
+                    <h3 class="card-title">New Year Party</h3>
+
+                    <p class="card-desc">
+                        Celebrate New Year with music, food and unforgettable vibes.
+                    </p>
+
+                    <div class="card-footer">
+
+                        <div class="card-price">₹50,000</div>
+
+                        <a href="{% url 'booking' 'New Year' %}" class="primary-btn">
+                            Book Now
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Award -->
+
+            <div class="card">
+
+                <img src="{% static 'images/Award Ceremony.jpg' %}" class="card-img">
+
+                <div class="card-content">
+
+                    <h3 class="card-title">Award Ceremony</h3>
+
+                    <p class="card-desc">
+                        Elegant catering setup for professional award functions.
+                    </p>
+
+                    <div class="card-footer">
+
+                        <div class="card-price">₹50,000</div>
+
+                        <a href="{% url 'booking' 'Award Ceremony' %}" class="primary-btn">
+                            Book Now
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Festive -->
+
+            <div class="card">
+
+                <img src="{% static 'images/Festive Gathering.jpg' %}" class="card-img">
+
+                <div class="card-content">
+
+                    <h3 class="card-title">Festive Gathering</h3>
+
+                    <p class="card-desc">
+                        Traditional festive catering for joyful family moments.
+                    </p>
+
+                    <div class="card-footer">
+
+                        <div class="card-price">₹15,000</div>
+
+                        <a href="{% url 'booking' 'Festive Gathering' %}" class="primary-btn">
+                            Book Now
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Kitty -->
+
+            <div class="card">
+
+                <img src="{% static 'images/kitty.jpg' %}" class="card-img">
+
+                <div class="card-content">
+
+                    <h3 class="card-title">Kitty Party</h3>
+
+                    <p class="card-desc">
+                        Fun and stylish catering for kitty parties and get togethers.
+                    </p>
+
+                    <div class="card-footer">
+
+                        <div class="card-price">₹15,000</div>
+
+                        <a href="{% url 'booking' 'kitty' %}" class="primary-btn">
+                            Book Now
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- FEATURES -->
+
+        <div class="features">
+
+            <div class="feature-box">
+                <h3>🍴 Premium Food</h3>
+                <p>Fresh ingredients and delicious cuisines for every event.</p>
+            </div>
+
+            <div class="feature-box">
+                <h3>🎉 Best Decoration</h3>
+                <p>Stylish event setup and elegant food presentation.</p>
+            </div>
+
+            <div class="feature-box">
+                <h3>👨‍🍳 Professional Staff</h3>
+                <p>Experienced chefs and well-trained serving staff.</p>
+            </div>
+
+            <div class="feature-box">
+                <h3>⭐ Trusted Service</h3>
+                <p>Trusted by hundreds of happy customers and families.</p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        © 2026 Catering Portal | Designed With ❤️
+
+    </footer>
+
+</body>
+</html>

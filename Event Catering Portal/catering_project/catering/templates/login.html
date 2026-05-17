@@ -1,0 +1,441 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Login - Catering Portal</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Poppins',sans-serif;
+        }
+
+        body{
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            overflow:hidden;
+            position:relative;
+            background:
+            linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.85)),
+            url("{% static 'images/login.jpg' %}");
+            background-size:cover;
+            background-position:center;
+        }
+
+        /* ANIMATED BACKGROUND */
+
+        .glow{
+            position:absolute;
+            border-radius:50%;
+            filter:blur(90px);
+            animation:float 6s infinite ease-in-out alternate;
+        }
+
+        .glow1{
+            width:280px;
+            height:280px;
+            background:#7c3aed;
+            top:-80px;
+            left:-80px;
+            opacity:0.5;
+        }
+
+        .glow2{
+            width:320px;
+            height:320px;
+            background:#06b6d4;
+            bottom:-100px;
+            right:-100px;
+            opacity:0.4;
+        }
+
+        @keyframes float{
+            from{
+                transform:translateY(0px);
+            }
+            to{
+                transform:translateY(20px);
+            }
+        }
+
+        /* LOGIN CARD */
+
+        .login-card{
+            position:relative;
+            width:100%;
+            max-width:430px;
+            padding:45px 35px;
+            border-radius:30px;
+            background:rgba(15,23,42,0.72);
+            backdrop-filter:blur(20px);
+            border:1px solid rgba(255,255,255,0.08);
+            box-shadow:
+            0 10px 40px rgba(0,0,0,0.5),
+            inset 0 0 30px rgba(255,255,255,0.03);
+            z-index:10;
+            animation:fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn{
+            from{
+                opacity:0;
+                transform:translateY(40px);
+            }
+            to{
+                opacity:1;
+                transform:translateY(0);
+            }
+        }
+
+        /* LOGO */
+
+        .logo{
+            text-align:center;
+            margin-bottom:25px;
+        }
+
+        .logo-icon{
+            width:80px;
+            height:80px;
+            margin:auto;
+            border-radius:50%;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            font-size:35px;
+            background:linear-gradient(135deg,#7c3aed,#2563eb);
+            box-shadow:0 0 25px rgba(124,58,237,0.5);
+            margin-bottom:18px;
+        }
+
+        .logo h1{
+            color:white;
+            font-size:30px;
+            font-weight:700;
+            letter-spacing:1px;
+        }
+
+        .logo p{
+            color:#cbd5e1;
+            margin-top:6px;
+            font-size:14px;
+        }
+
+        /* TITLE */
+
+        .welcome{
+            text-align:center;
+            margin-bottom:28px;
+        }
+
+        .welcome h2{
+            color:white;
+            font-size:32px;
+            font-weight:700;
+            margin-bottom:8px;
+        }
+
+        .welcome span{
+            color:#94a3b8;
+            font-size:14px;
+        }
+
+        /* FORM */
+
+        .form-group{
+            position:relative;
+            margin-bottom:22px;
+        }
+
+        .form-group span{
+            position:absolute;
+            left:18px;
+            top:15px;
+            color:#cbd5e1;
+            font-size:18px;
+        }
+
+        .form-group input{
+            width:100%;
+            padding:15px 18px 15px 50px;
+            border-radius:16px;
+            border:1px solid rgba(255,255,255,0.08);
+            background:rgba(255,255,255,0.06);
+            color:white;
+            outline:none;
+            font-size:15px;
+            transition:0.3s;
+        }
+
+        .form-group input::placeholder{
+            color:#94a3b8;
+        }
+
+        .form-group input:focus{
+            border:1px solid #7c3aed;
+            background:rgba(255,255,255,0.08);
+            box-shadow:0 0 20px rgba(124,58,237,0.25);
+        }
+
+        /* OPTIONS */
+
+        .options{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:25px;
+            color:#cbd5e1;
+            font-size:13px;
+        }
+
+        .options a{
+            color:#a78bfa;
+            text-decoration:none;
+            transition:0.3s;
+        }
+
+        .options a:hover{
+            color:white;
+        }
+
+        /* BUTTON */
+
+        .btn-login{
+            width:100%;
+            padding:15px;
+            border:none;
+            border-radius:16px;
+            background:linear-gradient(135deg,#7c3aed,#2563eb);
+            color:white;
+            font-size:16px;
+            font-weight:600;
+            cursor:pointer;
+            transition:0.4s;
+            box-shadow:0 8px 25px rgba(124,58,237,0.35);
+        }
+
+        .btn-login:hover{
+            transform:translateY(-3px) scale(1.01);
+            box-shadow:0 12px 30px rgba(124,58,237,0.45);
+        }
+
+        /* REGISTER */
+
+        .register{
+            text-align:center;
+            margin-top:28px;
+            color:#cbd5e1;
+            font-size:14px;
+        }
+
+        .register a{
+            color:white;
+            text-decoration:none;
+            font-weight:600;
+        }
+
+        .register a:hover{
+            color:#a78bfa;
+        }
+
+        /* FOOTER */
+
+        .footer{
+            text-align:center;
+            margin-top:30px;
+            color:#94a3b8;
+            font-size:12px;
+        }
+
+        /* ERROR MESSAGE */
+
+        .error-msg{
+            background:rgba(239,68,68,0.15);
+            border:1px solid rgba(239,68,68,0.25);
+            color:#fecaca;
+            padding:12px;
+            border-radius:14px;
+            margin-bottom:18px;
+            text-align:center;
+            font-size:14px;
+            backdrop-filter:blur(10px);
+        }
+
+        /* MOBILE */
+
+        @media(max-width:500px){
+
+            .login-card{
+                margin:20px;
+                padding:35px 25px;
+            }
+
+            .welcome h2{
+                font-size:28px;
+            }
+
+            .logo h1{
+                font-size:26px;
+            }
+
+            .logo-icon{
+                width:70px;
+                height:70px;
+                font-size:30px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- GLOW EFFECTS -->
+
+    <div class="glow glow1"></div>
+    <div class="glow glow2"></div>
+
+    <!-- LOGIN CARD -->
+
+    <div class="login-card">
+
+        <!-- LOGO -->
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                🍽️
+            </div>
+
+            <h1>Catering Portal</h1>
+
+            <p>Luxury Catering & Event Services</p>
+
+        </div>
+
+        <!-- TITLE -->
+
+        <div class="welcome">
+
+            <h2>Welcome Back</h2>
+
+            <span>
+                Sign in to continue your experience
+            </span>
+
+        </div>
+
+        <!-- DJANGO ERROR MESSAGE -->
+
+        
+                <div class="error-msg" id="alertMsg">
+                   
+                </div>
+            
+        <!-- LOGIN FORM -->
+
+        <form action="{% url 'login' %}" method="POST">
+
+            <div class="form-group">
+
+                <span>👤</span>
+
+                <input
+                    type="text"
+                    name="username"
+                    placeholder="Enter Username"
+                    required
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <span>🔒</span>
+
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Enter Password"
+                    required
+                >
+
+            </div>
+
+            <!-- OPTIONS -->
+
+            <div class="options">
+
+                <label>
+                    <input type="checkbox">
+                    Remember Me
+                </label>
+
+                <a href="#">Forgot Password?</a>
+
+            </div>
+
+            <!-- BUTTON -->
+
+            <button type="submit" class="btn-login">
+                Login Now
+            </button>
+
+        </form>
+
+        <!-- REGISTER -->
+
+        <div class="register">
+
+            Don't have an account?
+
+            <a href="{% url 'register' %}">
+                Register Here
+            </a>
+
+        </div>
+
+        <!-- FOOTER -->
+
+        <div class="footer">
+
+            © 2026 Catering Portal • Designed With ❤️
+
+        </div>
+
+    </div>
+
+    <!-- AUTO HIDE ALERT -->
+
+    <script>
+
+        const alertMsg = document.getElementById('alertMsg');
+
+        if(alertMsg){
+
+            setTimeout(() => {
+
+                alertMsg.style.transition = "0.5s";
+                alertMsg.style.opacity = "0";
+
+                setTimeout(() => {
+                    alertMsg.remove();
+                },500);
+
+            },3500);
+        }
+
+    </script>
+
+</body>
+</html>

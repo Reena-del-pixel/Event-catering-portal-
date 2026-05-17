@@ -1,0 +1,317 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catering Portal - Payment</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Segoe UI',sans-serif;
+        }
+
+        body{
+            min-height:100vh;
+            background:linear-gradient(135deg,#0f172a,#1e1b4b,#0b1220);
+            color:#e2e8f0;
+        }
+
+        header{
+            background:rgba(2,6,23,0.75);
+            backdrop-filter:blur(12px);
+            padding:15px 30px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            border-bottom:1px solid rgba(255,255,255,0.08);
+            position:sticky;
+            top:0;
+            z-index:1000;
+        }
+
+        .logo{
+            font-size:24px;
+            font-weight:bold;
+            text-decoration:none;
+            color:#ffffff;
+        }
+
+        nav ul{
+            display:flex;
+            list-style:none;
+            gap:20px;
+            align-items:center;
+        }
+
+        nav ul li a{
+            color:#cbd5e1;
+            text-decoration:none;
+            font-weight:500;
+            transition:0.3s;
+        }
+
+        nav ul li a:hover{
+            color:#a78bfa;
+        }
+
+        .logout-btn{
+            padding:6px 14px;
+            border:1px solid rgba(255,255,255,0.2);
+            border-radius:8px;
+        }
+
+        .logout-btn:hover{
+            background:#7c3aed;
+            color:white;
+            border-color:#7c3aed;
+        }
+
+        .container-wrapper{
+            min-height:calc(100vh - 70px);
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            padding:40px 20px;
+        }
+
+        .payment-container{
+            width:100%;
+            max-width:620px;
+            background:rgba(15,23,42,0.85);
+            backdrop-filter:blur(18px);
+            border:1px solid rgba(255,255,255,0.08);
+            border-radius:22px;
+            padding:35px;
+            box-shadow:0 20px 60px rgba(0,0,0,0.6);
+        }
+
+        h2{
+            text-align:center;
+            color:#ffffff;
+            font-size:26px;
+            margin-bottom:8px;
+        }
+
+        .section-divider{
+            text-align:center;
+            color:#94a3b8;
+            margin-bottom:25px;
+            font-size:13px;
+        }
+
+        .summary-box{
+            background:rgba(255,255,255,0.04);
+            border:1px solid rgba(255,255,255,0.06);
+            border-radius:16px;
+            padding:20px;
+            margin-bottom:25px;
+        }
+
+        .summary-title{
+            font-size:14px;
+            font-weight:600;
+            color:#cbd5e1;
+            margin-bottom:15px;
+            letter-spacing:1px;
+            text-transform:uppercase;
+        }
+
+        .summary-row{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:10px 0;
+            font-size:15px;
+            color:#e2e8f0;
+        }
+
+        .static-text{
+            font-weight:600;
+            color:#ffffff;
+        }
+
+        .editable-input{
+            background:rgba(255,255,255,0.06);
+            border:1px solid rgba(255,255,255,0.1);
+            padding:8px 12px;
+            border-radius:10px;
+            color:white;
+            outline:none;
+            width:180px;
+        }
+
+        .editable-input:focus{
+            border-color:#7c3aed;
+            box-shadow:0 0 10px rgba(124,58,237,0.3);
+        }
+
+        .summary-row.total{
+            border-top:1px dashed rgba(255,255,255,0.15);
+            margin-top:10px;
+            padding-top:15px;
+            font-size:17px;
+            font-weight:700;
+            color:#a78bfa;
+        }
+
+        .payment-method-box{
+            background:rgba(255,255,255,0.04);
+            border:1px solid rgba(255,255,255,0.06);
+            border-radius:16px;
+            padding:20px;
+            margin-bottom:25px;
+        }
+
+        .method-title{
+            font-size:14px;
+            font-weight:600;
+            color:#cbd5e1;
+            margin-bottom:15px;
+            text-transform:uppercase;
+        }
+
+        .radio-group{
+            display:flex;
+            flex-direction:column;
+            gap:10px;
+        }
+
+        .radio-label{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            padding:12px;
+            border-radius:10px;
+            border:1px solid rgba(255,255,255,0.06);
+            background:rgba(255,255,255,0.03);
+            cursor:pointer;
+            transition:0.3s;
+            color:#e2e8f0;
+        }
+
+        .radio-label:hover{
+            background:rgba(124,58,237,0.1);
+            transform:translateX(4px);
+        }
+
+        .radio-label input{
+            accent-color:#7c3aed;
+        }
+
+        .btn-pay{
+            width:100%;
+            padding:14px;
+            border:none;
+            border-radius:12px;
+            background:linear-gradient(135deg,#7c3aed,#2563eb);
+            color:white;
+            font-size:16px;
+            font-weight:600;
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        .btn-pay:hover{
+            transform:translateY(-2px);
+            box-shadow:0 10px 25px rgba(124,58,237,0.4);
+        }
+
+    </style>
+</head>
+
+<body>
+
+<header>
+    <a href="{% url 'home' %}" class="logo">🍽️ Catering Portal</a>
+    <nav>
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'my_bookings' %}">My Bookings</a></li>
+            <li><a href="{% url 'profile' %}">Profile</a></li>
+            <li><a href="{% url 'contact_us' %}">Contact</a></li>
+            <li><a href="{% url 'about_us' %}">About</a></li>
+            <li><a href="{% url 'logout' %}" class="logout-btn">Logout</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container-wrapper">
+
+    <div class="payment-container">
+
+        <h2>Payment Details</h2>
+        <div class="section-divider">Secure Checkout</div>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="summary-box">
+
+                <div class="summary-title">Order Summary</div>
+
+                <div class="summary-row">
+                    <span>Service</span>
+                    <span class="static-text">{{ booking.service.name }}</span>
+                </div>
+
+                <div class="summary-row">
+                    <span>Date</span>
+                    <input type="date" name="edit_date" class="editable-input" value="{{ booking.date|date:'Y-m-d' }}">
+                </div>
+
+                <div class="summary-row">
+                    <span>Guests</span>
+                    <input type="number" name="edit_guests" class="editable-input" value="{{ booking.guests }}">
+                </div>
+
+                <div class="summary-row total">
+                    <span>Total</span>
+                    <span>₹{{ booking.amount }}</span>
+                </div>
+
+            </div>
+
+            <div class="payment-method-box">
+
+                <div class="method-title">Payment Method</div>
+
+                <div class="radio-group">
+
+                    <label class="radio-label">
+                        <input type="radio" name="payment_method" value="card" checked>
+                        Credit / Debit Card
+                    </label>
+
+                    <label class="radio-label">
+                        <input type="radio" name="payment_method" value="upi">
+                        UPI Payment
+                    </label>
+
+                    <label class="radio-label">
+                        <input type="radio" name="payment_method" value="netbanking">
+                        Net Banking
+                    </label>
+
+                    <label class="radio-label">
+                        <input type="radio" name="payment_method" value="cod">
+                        Cash On Delivery
+                    </label>
+
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn-pay">Pay Now</button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

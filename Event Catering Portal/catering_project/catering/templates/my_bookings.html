@@ -1,0 +1,448 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings - Catering Portal</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Poppins',sans-serif;
+        }
+
+        body{
+            min-height:100vh;
+            background:
+            linear-gradient(rgba(10,10,25,0.88),rgba(10,10,25,0.92)),
+            url("{% static 'images/login.jpg' %}");
+            background-size:cover;
+            background-position:center;
+            color:white;
+        }
+
+        header{
+            width:100%;
+            padding:18px 60px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            background:rgba(15,23,42,0.7);
+            backdrop-filter:blur(15px);
+            border-bottom:1px solid rgba(255,255,255,0.08);
+            position:sticky;
+            top:0;
+            z-index:1000;
+        }
+
+        .logo{
+            text-decoration:none;
+            color:white;
+            font-size:28px;
+            font-weight:700;
+            letter-spacing:1px;
+        }
+
+        nav ul{
+            display:flex;
+            list-style:none;
+            gap:24px;
+            align-items:center;
+        }
+
+        nav ul li a{
+            text-decoration:none;
+            color:#dbeafe;
+            font-size:15px;
+            transition:0.3s;
+            font-weight:500;
+        }
+
+        nav ul li a:hover{
+            color:#a78bfa;
+        }
+
+        .logout-btn{
+            padding:9px 18px;
+            border-radius:12px;
+            border:1px solid rgba(255,255,255,0.15);
+            background:rgba(255,255,255,0.08);
+        }
+
+        .logout-btn:hover{
+            background:#7c3aed;
+            color:white;
+        }
+
+        .main-container{
+            max-width:1250px;
+            margin:50px auto;
+            padding:0 25px;
+        }
+
+        .top-section{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:30px;
+            flex-wrap:wrap;
+            gap:20px;
+        }
+
+        .top-section h1{
+            font-size:38px;
+            font-weight:700;
+            color:white;
+        }
+
+        .top-section p{
+            color:#cbd5e1;
+            margin-top:8px;
+            font-size:15px;
+        }
+
+        .booking-count{
+            padding:14px 22px;
+            border-radius:18px;
+            background:rgba(255,255,255,0.08);
+            backdrop-filter:blur(10px);
+            border:1px solid rgba(255,255,255,0.08);
+            color:white;
+            font-size:15px;
+            box-shadow:0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .table-container{
+            width:100%;
+            overflow-x:auto;
+            border-radius:28px;
+            background:rgba(15,23,42,0.7);
+            backdrop-filter:blur(16px);
+            border:1px solid rgba(255,255,255,0.08);
+            box-shadow:0 10px 40px rgba(0,0,0,0.35);
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+            min-width:1000px;
+        }
+
+        thead{
+            background:rgba(124,58,237,0.15);
+        }
+
+        th{
+            padding:20px;
+            text-align:left;
+            font-size:13px;
+            letter-spacing:1px;
+            color:#cbd5e1;
+            text-transform:uppercase;
+            font-weight:600;
+            border-bottom:1px solid rgba(255,255,255,0.08);
+        }
+
+        td{
+            padding:22px 20px;
+            color:#f8fafc;
+            font-size:14px;
+            border-bottom:1px solid rgba(255,255,255,0.05);
+        }
+
+        tbody tr{
+            transition:0.3s;
+        }
+
+        tbody tr:hover{
+            background:rgba(255,255,255,0.04);
+        }
+
+        .booking-id{
+            font-weight:700;
+            color:#a78bfa;
+        }
+
+        .status{
+            display:inline-block;
+            padding:8px 14px;
+            border-radius:30px;
+            background:rgba(34,197,94,0.15);
+            color:#4ade80;
+            font-size:12px;
+            font-weight:600;
+            letter-spacing:0.5px;
+        }
+
+        .btn-group{
+            display:flex;
+            gap:10px;
+        }
+
+        .action-btn{
+            text-decoration:none;
+            padding:10px 16px;
+            border-radius:12px;
+            font-size:13px;
+            font-weight:600;
+            transition:0.3s;
+            display:inline-block;
+        }
+
+        .btn-update{
+            background:linear-gradient(135deg,#2563eb,#4f46e5);
+            color:white;
+            box-shadow:0 5px 15px rgba(37,99,235,0.25);
+        }
+
+        .btn-update:hover{
+            transform:translateY(-2px);
+            box-shadow:0 8px 20px rgba(37,99,235,0.35);
+        }
+
+        .btn-cancel{
+            background:linear-gradient(135deg,#ef4444,#dc2626);
+            color:white;
+            box-shadow:0 5px 15px rgba(239,68,68,0.25);
+        }
+
+        .btn-cancel:hover{
+            transform:translateY(-2px);
+            box-shadow:0 8px 20px rgba(239,68,68,0.35);
+        }
+
+        .empty-box{
+            text-align:center;
+            padding:70px 20px;
+            color:#cbd5e1;
+        }
+
+        .empty-box h2{
+            margin-top:15px;
+            font-size:28px;
+            color:white;
+        }
+
+        .empty-box p{
+            margin-top:10px;
+            font-size:15px;
+        }
+
+        .footer{
+            text-align:center;
+            margin-top:40px;
+            padding:25px;
+            color:#94a3b8;
+            font-size:13px;
+        }
+
+        @media(max-width:900px){
+
+            header{
+                flex-direction:column;
+                gap:18px;
+                padding:20px;
+            }
+
+            nav ul{
+                flex-wrap:wrap;
+                justify-content:center;
+            }
+
+            .top-section{
+                flex-direction:column;
+                align-items:flex-start;
+            }
+
+            .top-section h1{
+                font-size:30px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+
+        <a href="{% url 'home' %}" class="logo">
+            🍽️ Catering Portal
+        </a>
+
+        <nav>
+
+            <ul>
+
+                <li><a href="{% url 'home' %}">Home</a></li>
+
+                <li><a href="{% url 'my_bookings' %}">My Bookings</a></li>
+
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+
+                <li><a href="{% url 'contact_us' %}">Contact</a></li>
+
+                <li><a href="{% url 'about_us' %}">About</a></li>
+
+                <li>
+                    <a href="{% url 'logout' %}" class="logout-btn">
+                        Logout
+                    </a>
+                </li>
+
+            </ul>
+
+        </nav>
+
+    </header>
+
+    <div class="main-container">
+
+        <div class="top-section">
+
+            <div>
+
+                <h1>My Bookings</h1>
+
+                <p>
+                    Manage your catering bookings and event schedules
+                </p>
+
+            </div>
+
+            <div class="booking-count">
+
+                Total Bookings :
+                <strong>{{ bookings|length }}</strong>
+
+            </div>
+
+        </div>
+
+        {% if bookings %}
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Booking ID</th>
+
+                        <th>Service</th>
+
+                        <th>Event Date</th>
+
+                        <th>Guests</th>
+
+                        <th>Total Amount</th>
+
+                        <th>Status</th>
+
+                        <th>Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for b in bookings %}
+
+                    <tr>
+
+                        <td class="booking-id">
+                            #{{ b.id }}
+                        </td>
+
+                        <td>
+                            {{ b.service.name }}
+                        </td>
+
+                        <td>
+                            {{ b.date|date:"d M Y" }}
+                        </td>
+
+                        <td>
+                            {{ b.guests }} Guests
+                        </td>
+
+                        <td>
+                            ₹{{ b.amount }}
+                        </td>
+
+                        <td>
+                            <span class="status">
+                                {{ b.status }}
+                            </span>
+                        </td>
+
+                        <td>
+
+                            <div class="btn-group">
+
+                                <a href="{% url 'update_booking' b.id %}" class="action-btn btn-update">
+                                    Update
+                                </a>
+
+                                <a href="{% url 'cancel_booking' b.id %}"
+                                   class="action-btn btn-cancel"
+                                   onclick="return confirm('Are you sure you want to cancel this booking?');">
+
+                                    Cancel
+
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="table-container">
+
+            <div class="empty-box">
+
+                <div style="font-size:60px;">🍽️</div>
+
+                <h2>No Bookings Yet</h2>
+
+                <p>
+                    Your catering bookings will appear here.
+                </p>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+        <div class="footer">
+
+            © 2026 Catering Portal • Premium Catering Services
+
+        </div>
+
+    </div>
+
+</body>
+</html>

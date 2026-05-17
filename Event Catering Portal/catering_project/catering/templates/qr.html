@@ -1,0 +1,316 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catering Portal - Booking Confirmed</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Segoe UI',sans-serif;
+        }
+
+        body{
+            min-height:100vh;
+            background:linear-gradient(135deg,#0f172a,#1e1b4b,#0b1220);
+            color:#e2e8f0;
+        }
+
+        header{
+            background:rgba(2,6,23,0.75);
+            backdrop-filter:blur(12px);
+            padding:15px 30px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            border-bottom:1px solid rgba(255,255,255,0.08);
+            position:sticky;
+            top:0;
+            z-index:1000;
+        }
+
+        .logo{
+            font-size:22px;
+            font-weight:bold;
+            text-decoration:none;
+            color:white;
+        }
+
+        nav ul{
+            display:flex;
+            list-style:none;
+            gap:18px;
+        }
+
+        nav ul li a{
+            color:#cbd5e1;
+            text-decoration:none;
+            transition:0.3s;
+        }
+
+        nav ul li a:hover{
+            color:#a78bfa;
+        }
+
+        .logout-btn{
+            padding:6px 12px;
+            border:1px solid rgba(255,255,255,0.2);
+            border-radius:8px;
+        }
+
+        .logout-btn:hover{
+            background:#7c3aed;
+            border-color:#7c3aed;
+            color:white;
+        }
+
+        .container-wrapper{
+            min-height:calc(100vh - 70px);
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            gap:20px;
+            padding:40px 20px;
+        }
+
+        .qr-container{
+            width:100%;
+            max-width:520px;
+            background:rgba(15,23,42,0.85);
+            border:1px solid rgba(255,255,255,0.08);
+            border-radius:22px;
+            padding:35px;
+            text-align:center;
+            box-shadow:0 25px 60px rgba(0,0,0,0.6);
+            backdrop-filter:blur(18px);
+        }
+
+        .success-icon{
+            width:85px;
+            height:85px;
+            margin:0 auto 15px;
+            border-radius:50%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:40px;
+            background:linear-gradient(135deg,#22c55e,#16a34a);
+            box-shadow:0 10px 30px rgba(34,197,94,0.3);
+        }
+
+        h2{
+            color:white;
+            font-size:26px;
+            margin-bottom:8px;
+        }
+
+        .sub-text{
+            color:#94a3b8;
+            font-size:14px;
+            margin-bottom:20px;
+        }
+
+        .qr-box{
+            background:rgba(255,255,255,0.05);
+            border:1px dashed rgba(255,255,255,0.2);
+            padding:18px;
+            border-radius:14px;
+            margin-bottom:15px;
+        }
+
+        .qr-box img{
+            width:200px;
+            height:200px;
+            object-fit:contain;
+        }
+
+        .booking-id{
+            color:#cbd5e1;
+            font-weight:600;
+            margin-bottom:20px;
+        }
+
+        .action-buttons{
+            display:flex;
+            flex-direction:column;
+            gap:10px;
+        }
+
+        .btn-details{
+            padding:12px;
+            border:none;
+            border-radius:12px;
+            font-weight:600;
+            cursor:pointer;
+            color:white;
+            background:linear-gradient(135deg,#7c3aed,#2563eb);
+        }
+
+        .btn-view{
+            padding:12px;
+            border-radius:12px;
+            text-decoration:none;
+            background:#1e293b;
+            color:#e2e8f0;
+            border:1px solid rgba(255,255,255,0.08);
+        }
+
+        .btn-home{
+            padding:12px;
+            border-radius:12px;
+            text-decoration:none;
+            color:#cbd5e1;
+            border:1px solid rgba(255,255,255,0.15);
+        }
+
+        .details-modal{
+            width:100%;
+            max-width:520px;
+            background:rgba(15,23,42,0.85);
+            border:1px solid rgba(255,255,255,0.08);
+            border-radius:18px;
+            padding:25px;
+            display:none;
+            backdrop-filter:blur(18px);
+            animation:fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn{
+            from{opacity:0; transform:translateY(10px);}
+            to{opacity:1; transform:translateY(0);}
+        }
+
+        .details-modal h3{
+            color:#a78bfa;
+            margin-bottom:15px;
+        }
+
+        .details-row{
+            display:flex;
+            justify-content:space-between;
+            padding:8px 0;
+            color:#cbd5e1;
+        }
+
+        .details-row span{
+            color:white;
+            font-weight:600;
+        }
+
+        .amount-highlight{
+            color:#22c55e !important;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<header>
+    <a href="{% url 'home' %}" class="logo">🍽️ Catering Portal</a>
+    <nav>
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'my_bookings' %}">My Bookings</a></li>
+            <li><a href="{% url 'profile' %}">Profile</a></li>
+            <li><a href="{% url 'logout' %}" class="logout-btn">Logout</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container-wrapper">
+
+    <div class="qr-container">
+
+        <div class="success-icon">✓</div>
+        <h2>Booking Confirmed</h2>
+        <p class="sub-text">Your order has been successfully placed</p>
+
+        <div class="qr-box">
+            <img src="{% static 'images/qr.jpg' %}" alt="QR">
+        </div>
+
+        <div class="booking-id">Booking ID: {{ booking.id }}</div>
+
+        <div class="action-buttons">
+            <button id="viewDetailsBtn" data-booking-id="{{ booking.id }}" class="btn-details">
+                View Details
+            </button>
+
+            <a href="{% url 'my_bookings' %}" class="btn-view">View My Bookings</a>
+            <a href="{% url 'home' %}" class="btn-home">Go Home</a>
+        </div>
+
+    </div>
+
+    <div id="detailsModal" class="details-modal">
+
+        <h3>Order Details</h3>
+
+        <div class="details-row">
+            <span>Service</span>
+            <span id="lblService">Loading...</span>
+        </div>
+
+        <div class="details-row">
+            <span>Date</span>
+            <span id="lblDate">Loading...</span>
+        </div>
+
+        <div class="details-row">
+            <span>Guests</span>
+            <span id="lblGuests">Loading...</span>
+        </div>
+
+        <div class="details-row">
+            <span>Address</span>
+            <span id="lblAddress">Loading...</span>
+        </div>
+
+        <div class="details-row">
+            <span>Total</span>
+            <span id="lblAmount" class="amount-highlight">Loading...</span>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+document.getElementById('viewDetailsBtn').addEventListener('click', function () {
+
+    let id = this.getAttribute('data-booking-id');
+    let box = document.getElementById('detailsModal');
+
+    if (box.style.display === 'block') {
+        box.style.display = 'none';
+        return;
+    }
+
+    fetch(`/order-details/${id}/`)
+    .then(res => res.json())
+    .then(data => {
+
+        document.getElementById('lblService').innerText = data.service_name;
+        document.getElementById('lblDate').innerText = data.date;
+        document.getElementById('lblGuests').innerText = data.guests;
+        document.getElementById('lblAddress').innerText = data.address || "Not Provided";
+        document.getElementById('lblAmount').innerText = "₹" + data.amount;
+
+        box.style.display = 'block';
+
+    })
+    .catch(() => {
+        alert("Failed to load details");
+    });
+
+});
+</script>
+
+</body>
+</html>
